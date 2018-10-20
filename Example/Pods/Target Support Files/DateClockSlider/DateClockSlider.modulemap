@@ -1,0 +1,6 @@
+framework module DateClockSlider {
+  umbrella header "DateClockSlider-umbrella.h"
+
+  export *
+  module * { export * }
+}

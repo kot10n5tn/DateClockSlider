@@ -1,0 +1,22 @@
+{
+  "name": "DateClockSlider",
+  "version": "0.1.0",
+  "summary": "A short description of DateClockSlider.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/kot10n5tn/DateClockSlider",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "kot10n5tn": "kot10n5tn@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/kot10n5tn/DateClockSlider.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "DateClockSlider/Classes/**/*"
+}
