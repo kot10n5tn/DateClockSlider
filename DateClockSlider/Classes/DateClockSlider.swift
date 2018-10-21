@@ -15,13 +15,13 @@ open class DateClockSlider: UIControl {
     open var trackFillColor: UIColor = .clear
     open var trackColor: UIColor = .white
     
-    open var lineWidth: CGFloat = 5.0
+    open var lineWidth: CGFloat = 6.0
     open var backtrackLineWidth: CGFloat = 5.0
     
     open var trackShadowOffset: CGPoint = .zero
     open var trackShadowColor: UIColor = .gray
     
-    open var thumbLineWidth: CGFloat = 4.0
+    open var thumbLineWidth: CGFloat = 0
     open var thumbRadius: CGFloat = 24.0
     
     open var endThumbTintColor: UIColor = .groupTableViewBackground
@@ -90,7 +90,14 @@ open class DateClockSlider: UIControl {
     
     public let endView = UIView()
     
-    private let generator: UIImpactFeedbackGenerator = {
+    public let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "clock", in: Bundle(for: DateClockSlider.self), compatibleWith: nil)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    public let generator: UIImpactFeedbackGenerator = {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
         return generator
@@ -108,10 +115,16 @@ open class DateClockSlider: UIControl {
     
     
     func setup() {
+        self.addSubview(self.imageView)
         self.addSubview(self.endView)
         
+        // MARK: なぜかimageViewずれてます
+        self.imageView.frame = CGRect(x: bounds.midX - (bounds.width - self.thumbRadius * 2) / 2, y: bounds.midY - (bounds.height - self.thumbRadius  * 2) / 2 - 1, width: bounds.width - self.thumbRadius * 2 + 4, height: bounds.height - self.thumbRadius * 2 + 2)
+        self.imageView.layer.cornerRadius = (bounds.width - self.thumbRadius * 2) / 2
+        self.imageView.layer.masksToBounds = true
+        
         self.endView.isUserInteractionEnabled = false
-        self.endView.backgroundColor = .purple
+        self.endView.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
         self.endView.layer.cornerRadius = self.thumbRadius
         moveThumb(toAngle: endPointValue * CGFloat(Double.pi * 2) - CGFloat(Double.pi / 2))
     }
@@ -122,12 +135,15 @@ open class DateClockSlider: UIControl {
     }
     
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-        sendActions(for: .editingDidBegin)
         let touchPosition = touch.location(in: self)
+        
+        guard self.endView.frame.contains(touchPosition) else { return false }
+        
         let startPoint = CGPoint(x: bounds.midX, y: 0)
         let value = newValue(from: endPointValue, touch: touchPosition, start: startPoint)
         
         changeValue(value)
+        sendActions(for: .editingDidBegin)
         
         return true
     }
@@ -183,7 +199,7 @@ open class DateClockSlider: UIControl {
             generator.impactOccurred()
         }
         
-        moveThumb(toAngle: value * CGFloat(Double.pi * 2) - CGFloat(Double.pi / 2))
+        moveThumb(toAngle: valueToAngle(value))
         endPointValue = value
     }
     
@@ -192,6 +208,10 @@ open class DateClockSlider: UIControl {
         let endPoint = DateClockSliderHelper.endPoint(fromCircle: circle, angle: angle)
         
         self.endView.frame = CGRect(x: endPoint.x - self.thumbRadius, y: endPoint.y - self.thumbRadius, width: self.thumbRadius * 2, height: self.thumbRadius * 2)
+    }
+    
+    internal func valueToAngle(_ value: CGFloat) -> CGFloat {
+        return value * CGFloat(Double.pi * 2) - CGFloat(Double.pi / 2)
     }
     
 }

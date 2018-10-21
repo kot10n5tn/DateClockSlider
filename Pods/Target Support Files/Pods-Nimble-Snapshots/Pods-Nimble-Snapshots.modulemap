@@ -1,0 +1,6 @@
+framework module Pods_Nimble_Snapshots {
+  umbrella header "Pods-Nimble-Snapshots-umbrella.h"
+
+  export *
+  module * { export * }
+}

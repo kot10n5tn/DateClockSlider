@@ -3,8 +3,4 @@ use_frameworks!
 target 'DateClockSlider_Example' do
   pod 'DateClockSlider', :path => '../'
 
-  target 'DateClockSlider_Tests' do
-    inherit! :search_paths
-
-  end
 end

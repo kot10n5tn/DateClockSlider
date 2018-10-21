@@ -16,7 +16,8 @@
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "10.3"
   },
-  "source_files": "DateClockSlider/Classes/**/*"
+  "source_files": "DateClockSlider/Classes/**/*",
+  "resources": "DateClockSlider/Assets/*.xcassets"
 }

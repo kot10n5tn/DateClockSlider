@@ -11,7 +11,8 @@ import DateClockSlider
 
 class ViewController: UIViewController {
     
-    private lazy var dateClockSlider = DateClockSlider(frame: CGRect(x: self.view.bounds.midX - 160, y: self.view.bounds.midY - 160, width: 320, height: 320))
+//    private lazy var dateClockSlider = DateClockSlider(frame: CGRect(x: self.view.bounds.midX - 160, y: self.view.bounds.midY - 160, width: 320, height: 320))
+    private lazy var dateClockSlider = RangeDateClockSlider(frame: CGRect(x: self.view.bounds.midX - 160, y: self.view.bounds.midY - 160, width: 320, height: 320))
     
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -37,16 +38,24 @@ class ViewController: UIViewController {
         
         self.timeLabel.frame = CGRect(x: self.view.bounds.midX - 160, y: self.view.bounds.midY + 240, width: 320, height: 20)
         
+        let start = dateFormatter.string(from: dateClockSlider.getCurrentDateComponents(thumb: .startThumb).date!)
+        let end = dateFormatter.string(from: dateClockSlider.getCurrentDateComponents(thumb: .endThumb).date!)
+        
+        self.timeLabel.text = start + " ~ " + end
+        
         dateClockSlider.addTarget(self, action: #selector(onChanged), for: .editingDidBegin)
         dateClockSlider.addTarget(self, action: #selector(onChanged), for: .valueChanged)
     }
     
     @objc private func onChanged(sender: UIControl) {
-        guard let dateClockSlider = sender as? DateClockSlider else {
+        guard let dateClockSlider = sender as? RangeDateClockSlider else {
             return
         }
         
-        self.timeLabel.text = dateFormatter.string(from: dateClockSlider.getCurrentDateComponents().date!)
+        let start = dateFormatter.string(from: dateClockSlider.getCurrentDateComponents(thumb: .startThumb).date!)
+        let end = dateFormatter.string(from: dateClockSlider.getCurrentDateComponents(thumb: .endThumb).date!)
+        
+        self.timeLabel.text = start + " ~ " + end
     }
 
     override func didReceiveMemoryWarning() {

@@ -14,8 +14,9 @@ extension DateClockSlider {
         let origin = circle.origin
         
         path.lineWidth = 0
-        path.addArc(withCenter: origin, radius: circle.radius, startAngle: arc.startAngle, endAngle: arc.endAngle, clockwise: false)
-        path.move(to: origin)
+        path.addLine(to: CGPoint(x: circle.radius * cos(arc.endAngle), y: circle.radius * sin(arc.endAngle)))
+        path.addArc(withCenter: origin, radius: circle.radius, startAngle: arc.startAngle, endAngle: arc.endAngle, clockwise: true)
+        path.addLine(to: origin)
         path.fill()
         path.close()
     }
@@ -25,7 +26,7 @@ extension DateClockSlider {
         let origin = circle.origin
         
         path.lineWidth = lineWidth
-        path.addArc(withCenter: origin, radius: circle.radius, startAngle: arc.startAngle, endAngle: arc.endAngle, clockwise: false)
+        path.addArc(withCenter: origin, radius: circle.radius, startAngle: arc.startAngle, endAngle: arc.endAngle, clockwise: true)
         path.move(to: origin)
         path.stroke()
         path.close()
@@ -57,16 +58,24 @@ extension DateClockSlider {
     }
     
     internal func drawFilledArc(fromAngle startAngle: CGFloat, toAngle endAngle: CGFloat) {
-        UIColor.blue.setFill()
-        UIColor.green.setStroke()
+        #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1).setStroke()
         
         let circle = Circle(origin: CGPoint(x: bounds.midX, y: bounds.midY), radius: self.radius)
         let arc = Arc(circle: circle, startAngle: startAngle, endAngle: endAngle)
         
         // fill Arc
-        DateClockSlider.drawDisk(withArc: arc, path: UIBezierPath())
+//        DateClockSlider.drawDisk(withArc: arc, path: UIBezierPath())
         // stroke Arc
-        DateClockSlider.drawArc(withArc: arc, lineWidth: 4, path: UIBezierPath())
+        DateClockSlider.drawArc(withArc: arc, lineWidth: lineWidth, path: UIBezierPath())
+    }
+    
+    internal func drawSelectedArc(fromAngle startAngle: CGFloat, toAngle endAngle: CGFloat) {
+        #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).setFill()
+        
+        let circle = Circle(origin: CGPoint(x: bounds.midX, y: bounds.midY), radius: self.radius)
+        let arc = Arc(circle: circle, startAngle: startAngle, endAngle: endAngle)
+        
+        DateClockSlider.drawDisk(withArc: arc, path: UIBezierPath())
     }
     
 }

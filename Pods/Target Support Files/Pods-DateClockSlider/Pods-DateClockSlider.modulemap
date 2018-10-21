@@ -1,0 +1,6 @@
+framework module Pods_DateClockSlider {
+  umbrella header "Pods-DateClockSlider-umbrella.h"
+
+  export *
+  module * { export * }
+}
